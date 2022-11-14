@@ -16,9 +16,12 @@ void ATestActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UE_LOG(LogTemp, Warning, TEXT("%d"), num);
-	UE_LOG(LogTemp, Warning, TEXT("%.2f"), num2);
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *name);
+	//UE_LOG(LogTemp, Warning, TEXT("%d"), num);
+	//UE_LOG(LogTemp, Warning, TEXT("%.2f"), num2);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *name);
+
+	int32 result = Add(num, num2);
+	UE_LOG(LogTemp, Warning, TEXT("%d"), result);
 }
 
 // Called every frame
@@ -26,5 +29,12 @@ void ATestActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+int32 ATestActor::Add(int32 number1, int32 number2)
+{
+	int32 result = number1 + number2;
+	
+	return result;
 }
 

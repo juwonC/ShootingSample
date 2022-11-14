@@ -23,15 +23,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 num = 10;
 
-	UPROPERTY(VisibleAnywhere)
-	float num2 = 3.14f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 num2 = 30;
 
 	//FString name = "Juwon";
+	UPROPERTY(EditInstanceOnly)
 	FString name = TEXT("주원");
 
 	bool isReady = true;
 	bool isFinished = false;
+
+	int32 Add(int32 number1, int32 number2);
 };
