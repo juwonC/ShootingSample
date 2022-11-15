@@ -36,5 +36,6 @@ public:
 	bool isReady = true;
 	bool isFinished = false;
 
+	UFUNCTION(BlueprintPure)
 	int32 Add(int32 number1, int32 number2);
 };
