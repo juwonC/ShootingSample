@@ -40,6 +40,17 @@ void AShootingPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Create Direction Vector
+	FVector dir = FVector(0, h, v);
+
+	// Normalize Vector
+	dir.Normalize();
+
+	// Get Location
+	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
+
+	// Update new location
+	SetActorLocation(newLocation);
 }
 
 // Called to bind functionality to input
@@ -47,5 +58,19 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("Horizontal", this, &AShootingPlayer::MoveHorizontal);
+	PlayerInputComponent->BindAxis("Vertical", this, &AShootingPlayer::MoveVertical);
+}
+
+void AShootingPlayer::MoveHorizontal(float value)
+{
+	// Assign input Axis values to h
+	h = value;
+}
+
+void AShootingPlayer::MoveVertical(float value)
+{
+	// Assign input Axis values to v
+	v = value;
 }
 

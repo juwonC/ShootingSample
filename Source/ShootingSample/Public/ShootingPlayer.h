@@ -31,4 +31,17 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meshComp;
+
+	// Speed Variable
+	UPROPERTY(EditAnywhere)
+	float moveSpeed = 500;
+
+private:
+	// input keybinding variables
+	float h;
+	float v;
+
+	// input keybinding functions
+	void MoveHorizontal(float value);
+	void MoveVertical(float value);
 };
