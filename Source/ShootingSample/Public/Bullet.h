@@ -24,6 +24,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
+	float moveSpeed = 800.0f;
+
+	UPROPERTY(EditAnywhere)
 	class UBoxComponent* boxComp;
 
 	UPROPERTY(EditAnywhere)

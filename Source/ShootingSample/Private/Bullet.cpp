@@ -33,5 +33,9 @@ void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Get Forward Location
+	FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+
+	SetActorLocation(newLocation);
 }
 

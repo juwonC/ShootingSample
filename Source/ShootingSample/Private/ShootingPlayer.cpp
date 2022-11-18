@@ -4,6 +4,8 @@
 #include "ShootingPlayer.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/ArrowComponent.h"
+#include "Bullet.h"
 
 // Sets default values
 AShootingPlayer::AShootingPlayer()
@@ -26,6 +28,9 @@ AShootingPlayer::AShootingPlayer()
 	// Adjust Box Component size
 	FVector boxSize = FVector(50.0f, 50.0f, 50.0f);
 	boxComp->SetBoxExtent(boxSize);
+
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
+	firePosition->SetupAttachment(boxComp);
 }
 
 // Called when the game starts or when spawned
@@ -60,6 +65,8 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAxis("Horizontal", this, &AShootingPlayer::MoveHorizontal);
 	PlayerInputComponent->BindAxis("Vertical", this, &AShootingPlayer::MoveVertical);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShootingPlayer::Fire);
 }
 
 void AShootingPlayer::MoveHorizontal(float value)
@@ -72,5 +79,11 @@ void AShootingPlayer::MoveVertical(float value)
 {
 	// Assign input Axis values to v
 	v = value;
+}
+
+void AShootingPlayer::Fire()
+{
+	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, firePosition->GetComponentLocation(),
+		firePosition->GetComponentRotation());
 }
 

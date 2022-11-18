@@ -36,6 +36,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float moveSpeed = 500;
 
+	UPROPERTY(EditAnywhere)
+	class UArrowComponent* firePosition;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABullet> bulletFactory;
+
 private:
 	// input keybinding variables
 	float h;
@@ -44,4 +50,6 @@ private:
 	// input keybinding functions
 	void MoveHorizontal(float value);
 	void MoveVertical(float value);
+
+	void Fire();
 };
