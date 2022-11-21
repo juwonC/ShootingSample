@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABullet> bulletFactory;
 
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireSound;
+
 private:
 	// input keybinding variables
 	float h;

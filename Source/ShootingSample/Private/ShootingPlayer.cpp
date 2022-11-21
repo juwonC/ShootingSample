@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Bullet.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AShootingPlayer::AShootingPlayer()
@@ -85,5 +86,7 @@ void AShootingPlayer::Fire()
 {
 	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, firePosition->GetComponentLocation(),
 		firePosition->GetComponentRotation());
+
+	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 }
 
