@@ -4,6 +4,8 @@
 #include "EnemyActor.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "EngineUtils.h"
+#include "ShootingPlayer.h"
 
 // Sets default values
 AEnemyActor::AEnemyActor()
@@ -24,6 +26,23 @@ void AEnemyActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	int32 drawResult = FMath::RandRange(1, 100);
+
+	if (drawResult <= traceRate)
+	{
+		for (TActorIterator<AShootingPlayer> player(GetWorld()); player; ++player)
+		{
+			if (player->GetName().Contains(TEXT("BP_ShootingPlayer")))
+			{
+				dir = player->GetActorLocation() - GetActorLocation();
+				dir.Normalize();
+			}
+		}
+	}
+	else
+	{
+		dir = GetActorForwardVector();
+	}
 }
 
 // Called every frame
@@ -31,5 +50,7 @@ void AEnemyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
+	SetActorLocation(newLocation);
 }
 
