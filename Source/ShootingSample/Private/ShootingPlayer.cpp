@@ -32,6 +32,21 @@ AShootingPlayer::AShootingPlayer()
 
 	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
 	firePosition->SetupAttachment(boxComp);
+
+	// Generate Overlap Event
+	boxComp->SetGenerateOverlapEvents(true);
+
+	// Set Query And Physics
+	boxComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	// Set Object Type on channel1
+	boxComp->SetCollisionObjectType(ECC_GameTraceChannel1);
+
+	// Set All Channels to ignore
+	boxComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	// Check Collision with Enemys
+	boxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
