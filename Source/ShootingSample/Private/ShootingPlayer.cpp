@@ -47,6 +47,7 @@ AShootingPlayer::AShootingPlayer()
 
 	// Check Collision with Enemys
 	boxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Overlap);
+	boxComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 }
 
 // Called when the game starts or when spawned
