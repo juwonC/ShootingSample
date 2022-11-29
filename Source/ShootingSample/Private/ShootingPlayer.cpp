@@ -72,7 +72,7 @@ void AShootingPlayer::Tick(float DeltaTime)
 	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
 
 	// Update new location
-	SetActorLocation(newLocation);
+	SetActorLocation(newLocation, true);
 }
 
 // Called to bind functionality to input

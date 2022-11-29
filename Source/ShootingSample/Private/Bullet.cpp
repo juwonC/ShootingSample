@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "EnemyActor.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShootingSampleGameModeBase.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -56,6 +57,15 @@ void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		OtherActor->Destroy();
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
+		AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
+
+		AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
+
+		if (currentGameModeBase != nullptr)
+		{
+			currentGameModeBase->AddScore(1);
+		}
 	}
 
 	Destroy();
