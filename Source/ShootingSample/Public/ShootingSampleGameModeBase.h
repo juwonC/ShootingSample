@@ -17,6 +17,14 @@ class SHOOTINGSAMPLE_API AShootingSampleGameModeBase : public AGameModeBase
 public:
 	void AddScore(int32 point);
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMainWidget> mainWidget;
+
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	int32 currentScore = 0;
+
+	class UMainWidget* mainUI;
 };
