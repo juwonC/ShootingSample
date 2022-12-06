@@ -4,6 +4,7 @@
 #include "ShootingSampleGameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "MainWidget.h"
+#include "Components/TextBlock.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
@@ -20,7 +21,17 @@ void AShootingSampleGameModeBase::BeginPlay()
 	}
 }
 
+void AShootingSampleGameModeBase::PrintScore()
+{
+	if (mainUI != nullptr)
+	{
+		mainUI->scoreData->SetText(FText::AsNumber(currentScore));
+	}
+}
+
 void AShootingSampleGameModeBase::AddScore(int32 point)
 {
 	currentScore += point;
+
+	PrintScore();
 }
