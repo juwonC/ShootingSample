@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "EngineUtils.h"
 #include "ShootingPlayer.h"
+#include "ShootingSampleGameModeBase.h"
 
 // Sets default values
 AEnemyActor::AEnemyActor()
@@ -68,6 +69,13 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	if (player != nullptr)
 	{
 		OtherActor->Destroy();
+
+		AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
+
+		if (currentGameMode != nullptr)
+		{
+			currentGameMode->ShowMenu();
+		}
 	}
 
 	Destroy();

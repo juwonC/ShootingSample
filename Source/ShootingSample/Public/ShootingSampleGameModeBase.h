@@ -20,6 +20,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMainWidget> mainWidget;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMenuWidget> menuWidget;
+
+	void ShowMenu();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -27,6 +32,8 @@ private:
 	int32 currentScore = 0;
 
 	class UMainWidget* mainUI;
+
+	class UMenuWidget* menuUI;
 
 	void PrintScore();
 };

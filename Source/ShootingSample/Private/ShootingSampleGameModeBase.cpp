@@ -5,6 +5,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainWidget.h"
 #include "Components/TextBlock.h"
+#include "MenuWidget.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
@@ -17,6 +18,19 @@ void AShootingSampleGameModeBase::BeginPlay()
 		if (mainUI != nullptr)
 		{
 			mainUI->AddToViewport();
+		}
+	}
+}
+
+void AShootingSampleGameModeBase::ShowMenu()
+{
+	if (menuWidget != nullptr)
+	{
+		menuUI = CreateWidget<UMenuWidget>(GetWorld(), menuWidget);
+
+		if (menuUI != nullptr)
+		{
+			menuUI->AddToViewport();
 		}
 	}
 }
