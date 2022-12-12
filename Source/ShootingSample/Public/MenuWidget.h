@@ -20,4 +20,13 @@ public:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* buttonQuit;
+
+	UFUNCTION()
+	void Restart();
+
+	UFUNCTION()
+	void Quit();
+
+protected:
+	virtual void NativeConstruct() override;
 };
