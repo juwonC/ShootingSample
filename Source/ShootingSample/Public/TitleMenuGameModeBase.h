@@ -17,4 +17,10 @@ class SHOOTINGSAMPLE_API ATitleMenuGameModeBase : public AGameModeBase
 public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UTitleWidget> titleWidget;
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	class UTitleWidget* titleUI;
 };
