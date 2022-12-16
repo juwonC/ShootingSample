@@ -17,10 +17,4 @@ class SHOOTINGSAMPLE_API UTitleWidget : public UUserWidget
 public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTextBlock* start;
-
-	UFUNCTION()
-	void Start();
-
-protected:
-	virtual void NativeConstruct() override;
 };
