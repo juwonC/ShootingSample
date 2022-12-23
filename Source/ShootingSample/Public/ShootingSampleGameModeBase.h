@@ -23,7 +23,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMenuWidget> menuWidget;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UPauseWidget> pauseWidget;
+
 	void ShowMenu();
+	void PauseGame();
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,6 +38,8 @@ private:
 	class UMainWidget* mainUI;
 
 	class UMenuWidget* menuUI;
+
+	class UPauseWidget* pauseUI;
 
 	void PrintScore();
 };

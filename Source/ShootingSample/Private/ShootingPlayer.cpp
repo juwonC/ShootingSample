@@ -7,6 +7,7 @@
 #include "Components/ArrowComponent.h"
 #include "Bullet.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShootingSampleGameModeBase.h"
 
 // Sets default values
 AShootingPlayer::AShootingPlayer()
@@ -84,6 +85,8 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("Vertical", this, &AShootingPlayer::MoveVertical);
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShootingPlayer::Fire);
+
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AShootingPlayer::Pause);
 }
 
 void AShootingPlayer::MoveHorizontal(float value)
@@ -104,5 +107,15 @@ void AShootingPlayer::Fire()
 		firePosition->GetComponentRotation());
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+}
+
+void AShootingPlayer::Pause()
+{
+	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	if (currentGameMode != nullptr)
+	{
+		currentGameMode->PauseGame();
+	}
 }
 

@@ -3,10 +3,11 @@
 
 #include "ShootingSampleGameModeBase.h"
 #include "Blueprint/UserWidget.h"
-#include "MainWidget.h"
 #include "Components/TextBlock.h"
-#include "MenuWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "MainWidget.h"
+#include "MenuWidget.h"
+#include "PauseWidget.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
@@ -34,6 +35,23 @@ void AShootingSampleGameModeBase::ShowMenu()
 			menuUI->AddToViewport();
 
 			UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+			GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		}
+	}
+}
+
+void AShootingSampleGameModeBase::PauseGame()
+{
+	if (pauseWidget != nullptr)
+	{
+		pauseUI = CreateWidget<UPauseWidget>(GetWorld(), pauseWidget);
+
+		if (pauseUI != nullptr)
+		{
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			
+			pauseUI->AddToViewport();
 
 			GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		}

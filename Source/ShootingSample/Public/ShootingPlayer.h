@@ -55,4 +55,6 @@ private:
 	void MoveVertical(float value);
 
 	void Fire();
+
+	void Pause();
 };
