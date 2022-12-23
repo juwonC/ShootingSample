@@ -49,9 +49,9 @@ void AShootingSampleGameModeBase::PauseGame()
 
 		if (pauseUI != nullptr)
 		{
-			UGameplayStatics::SetGamePaused(GetWorld(), true);
-			
 			pauseUI->AddToViewport();
+			
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
 
 			GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		}

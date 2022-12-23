@@ -8,7 +8,11 @@
 
 void UPauseWidget::Resume()
 {
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 
+	RemoveFromParent();
+
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
 }
 
 void UPauseWidget::Quit()
@@ -22,5 +26,6 @@ void UPauseWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	
+	buttonResume->OnClicked.AddDynamic(this, &UPauseWidget::Resume);
 	buttonQuit->OnClicked.AddDynamic(this, &UPauseWidget::Quit);
 }
