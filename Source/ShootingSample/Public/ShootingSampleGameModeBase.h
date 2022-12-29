@@ -15,7 +15,10 @@ class SHOOTINGSAMPLE_API AShootingSampleGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	int32 playerLife = 3;
+	
 	void AddScore(int32 point);
+	void PlayerOnHit(int32 life);
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMainWidget> mainWidget;
@@ -26,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UPauseWidget> pauseWidget;
 
-	void ShowMenu();
+	void GameOver();
 	void PauseGame();
 
 protected:
@@ -42,4 +45,5 @@ private:
 	class UPauseWidget* pauseUI;
 
 	void PrintScore();
+	void RemoveLifeImage();
 };

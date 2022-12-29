@@ -65,19 +65,26 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 								 bool bFromSweep, const FHitResult& SweepResult)
 {
 	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
+	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	if (player != nullptr)
+	if (currentGameMode != nullptr)
 	{
-		OtherActor->Destroy();
-
-		AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
-
-		if (currentGameMode != nullptr)
-		{
-			currentGameMode->ShowMenu();
-		}
+		currentGameMode->PlayerOnHit(1);
 	}
 
-	Destroy();
+	if (currentGameMode->playerLife <= 0)
+	{
+		if (player != nullptr)
+		{
+			OtherActor->Destroy();
+
+			if (currentGameMode != nullptr)
+			{
+				currentGameMode->GameOver();
+			}
+		}
+
+		Destroy();
+	}
 }
 

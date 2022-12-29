@@ -4,10 +4,12 @@
 #include "ShootingSampleGameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 #include "MainWidget.h"
 #include "MenuWidget.h"
 #include "PauseWidget.h"
+#include "ShootingPlayer.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
@@ -24,7 +26,7 @@ void AShootingSampleGameModeBase::BeginPlay()
 	}
 }
 
-void AShootingSampleGameModeBase::ShowMenu()
+void AShootingSampleGameModeBase::GameOver()
 {
 	if (menuWidget != nullptr)
 	{
@@ -71,4 +73,16 @@ void AShootingSampleGameModeBase::AddScore(int32 point)
 	currentScore += point;
 
 	PrintScore();
+}
+
+void AShootingSampleGameModeBase::PlayerOnHit(int32 life)
+{
+	playerLife -= life;
+
+	RemoveLifeImage();
+}
+
+void AShootingSampleGameModeBase::RemoveLifeImage()
+{
+	mainUI->lifeImage->RemoveFromParent();
 }
