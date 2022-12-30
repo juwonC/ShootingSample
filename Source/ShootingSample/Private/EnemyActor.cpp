@@ -7,6 +7,7 @@
 #include "EngineUtils.h"
 #include "ShootingPlayer.h"
 #include "ShootingSampleGameModeBase.h"
+#include "GameFramework/Pawn.h"
 
 // Sets default values
 AEnemyActor::AEnemyActor()
@@ -67,24 +68,28 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
 	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	if (currentGameMode != nullptr)
-	{
-		currentGameMode->PlayerOnHit(1);
-	}
+	FTimerHandle timerHandle;
 
-	if (currentGameMode->playerLife <= 0)
+	if (currentGameMode != nullptr)
 	{
 		if (player != nullptr)
 		{
 			OtherActor->Destroy();
 
-			if (currentGameMode != nullptr)
+			currentGameMode->PlayerOnHit(1);
+
+			GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]()
 			{
-				currentGameMode->GameOver();
-			}
+				GetWorld()->GetAuthGameMode()->RestartPlayer(GetWorld()->GetFirstPlayerController());
+			}, 1, false);
 		}
 
 		Destroy();
+
+		if (currentGameMode->playerLife <= 0)
+		{
+			currentGameMode->GameOver();
+		}
 	}
 }
 

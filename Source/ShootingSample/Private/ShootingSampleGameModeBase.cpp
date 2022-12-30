@@ -9,7 +9,6 @@
 #include "MainWidget.h"
 #include "MenuWidget.h"
 #include "PauseWidget.h"
-#include "ShootingPlayer.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
