@@ -29,8 +29,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UPauseWidget> pauseWidget;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ULifeWidget> lifeWidget;
+
 	void GameOver();
 	void PauseGame();
+	void SetPlayerLife(int32 life) { playerLife = life; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,6 +48,8 @@ private:
 
 	class UPauseWidget* pauseUI;
 
+	class ULifeWidget* lifeUI;
+
 	void PrintScore();
-	void RemoveLifeImage();
+	void UpdateLifeImage();
 };

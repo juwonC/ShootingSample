@@ -9,6 +9,7 @@
 #include "MainWidget.h"
 #include "MenuWidget.h"
 #include "PauseWidget.h"
+#include "LifeWidget.h"
 
 void AShootingSampleGameModeBase::BeginPlay()
 {
@@ -21,6 +22,16 @@ void AShootingSampleGameModeBase::BeginPlay()
 		if (mainUI != nullptr)
 		{
 			mainUI->AddToViewport();
+		}
+	}
+
+	if (lifeWidget != nullptr)
+	{
+		lifeUI = CreateWidget<ULifeWidget>(GetWorld(), lifeWidget);
+		
+		if (lifeUI != nullptr)
+		{
+			lifeUI->AddToViewport();
 		}
 	}
 }
@@ -78,10 +89,21 @@ void AShootingSampleGameModeBase::PlayerOnHit(int32 life)
 {
 	playerLife -= life;
 
-	RemoveLifeImage();
+	UpdateLifeImage();
 }
 
-void AShootingSampleGameModeBase::RemoveLifeImage()
+void AShootingSampleGameModeBase::UpdateLifeImage()
 {
-	mainUI->lifeImage->RemoveFromParent();
+	if (playerLife == 2)
+	{
+		lifeUI->lifeImage_0->SetColorAndOpacity(FColor(1, 1, 1, 0));
+	}
+	else if (playerLife == 1)
+	{
+		lifeUI->lifeImage_1->SetColorAndOpacity(FColor(1, 1, 1, 0));
+	}
+	else if (playerLife == 0)
+	{
+		lifeUI->lifeImage_2->SetColorAndOpacity(FColor(1, 1, 1, 0));
+	}
 }

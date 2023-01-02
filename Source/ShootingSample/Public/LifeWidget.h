@@ -4,20 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainWidget.generated.h"
+#include "LifeWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SHOOTINGSAMPLE_API UMainWidget : public UUserWidget
+class SHOOTINGSAMPLE_API ULifeWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class UTextBlock* scoreText;
+	class UImage* lifeImage_0;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class UTextBlock* scoreData;
+	class UImage* lifeImage_1;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* lifeImage_2;
 };
