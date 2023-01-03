@@ -20,4 +20,13 @@ public:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTextBlock* scoreData;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* lifeImage_0;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* lifeImage_1;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* lifeImage_2;
 };

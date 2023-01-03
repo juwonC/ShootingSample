@@ -89,8 +89,6 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		if (currentGameMode->playerLife <= 0)
 		{
 			currentGameMode->GameOver();
-
-			currentGameMode->SetPlayerLife(3);
 		}
 	}
 }
