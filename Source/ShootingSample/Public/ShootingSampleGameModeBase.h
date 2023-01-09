@@ -31,7 +31,6 @@ public:
 
 	void GameOver();
 	void PauseGame();
-	void SetPlayerLife(int32 life) { playerLife = life; }
 
 protected:
 	virtual void BeginPlay() override;

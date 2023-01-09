@@ -9,6 +9,7 @@
 #include "ShootingSampleGameModeBase.h"
 #include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 // Sets default values
 AEnemyActor::AEnemyActor()
@@ -79,16 +80,16 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 			currentGameMode->PlayerOnHit(1);
 
-			if (currentGameMode->playerLife == 0)
+			if (currentGameMode->playerLife <= 0)
 			{
 				UGameplayStatics::SetGamePaused(GetWorld(), true);
 				currentGameMode->GameOver();
 			}
 
-			GetWorld()->GetAuthGameMode()->RestartPlayer(GetWorld()->GetFirstPlayerController());
-		}
+			currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
 
-		Destroy();
+			Destroy();
+		}
 	}
 }
 
