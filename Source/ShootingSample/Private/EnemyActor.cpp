@@ -95,9 +95,9 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 			{
 				currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
 			}
-			
-			Destroy();
 		}
 	}
+
+	Destroy();
 }
 
