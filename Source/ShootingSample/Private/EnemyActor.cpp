@@ -46,7 +46,7 @@ void AEnemyActor::BeginPlay()
 				dir.Normalize();
 
 				// Rotate Enemies
-				FVector upVector = player->GetActorUpVector();
+				FVector upVector = this->GetActorUpVector();
 				FRotator newRotation = UKismetMathLibrary::MakeRotFromXZ(dir, upVector);
 				SetActorRotation(newRotation, ETeleportType::None);
 			}
