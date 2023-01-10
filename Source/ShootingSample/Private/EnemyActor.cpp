@@ -10,6 +10,7 @@
 #include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AEnemyActor::AEnemyActor()
@@ -43,6 +44,11 @@ void AEnemyActor::BeginPlay()
 			{
 				dir = player->GetActorLocation() - GetActorLocation();
 				dir.Normalize();
+
+				// Rotate Enemies
+				FVector upVector = player->GetActorUpVector();
+				FRotator newRotation = UKismetMathLibrary::MakeRotFromXZ(dir, upVector);
+				SetActorRotation(newRotation, ETeleportType::None);
 			}
 		}
 	}
@@ -85,9 +91,11 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 				UGameplayStatics::SetGamePaused(GetWorld(), true);
 				currentGameMode->GameOver();
 			}
-
-			currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
-
+			else
+			{
+				currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
+			}
+			
 			Destroy();
 		}
 	}
