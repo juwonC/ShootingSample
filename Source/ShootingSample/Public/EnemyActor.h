@@ -30,6 +30,12 @@ public:
 	class UStaticMeshComponent* meshComp;
 
 	UPROPERTY(EditAnywhere)
+	class UArrowComponent* firePosition;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABullet> bulletFactory;
+
+	UPROPERTY(EditAnywhere)
 	int32 traceRate = 50;
 
 	UPROPERTY(EditAnywhere)
@@ -42,4 +48,6 @@ public:
 
 private:
 	FVector dir;
+
+	void EnemyFire();
 };

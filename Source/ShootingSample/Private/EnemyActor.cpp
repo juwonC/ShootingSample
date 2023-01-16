@@ -4,12 +4,13 @@
 #include "EnemyActor.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "EngineUtils.h"
+#include "Components/ArrowComponent.h"
 #include "ShootingPlayer.h"
+#include "Bullet.h"
+#include "EngineUtils.h"
 #include "ShootingSampleGameModeBase.h"
 #include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
-#include "TimerManager.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -24,6 +25,9 @@ AEnemyActor::AEnemyActor()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(boxComp);
+
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
+	firePosition->SetupAttachment(boxComp);
 
 	// Set Enemy Collision Preset
 	boxComp->SetCollisionProfileName(TEXT("Enemy"));
@@ -67,6 +71,8 @@ void AEnemyActor::Tick(float DeltaTime)
 
 	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
 	SetActorLocation(newLocation);
+
+	EnemyFire();
 }
 
 void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
@@ -75,8 +81,6 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
 	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
-
-	FTimerHandle timerHandle;
 
 	if (currentGameMode != nullptr)
 	{
@@ -99,5 +103,11 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	}
 
 	Destroy();
+}
+
+void AEnemyActor::EnemyFire()
+{
+	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, firePosition->GetComponentLocation(),
+		firePosition->GetComponentRotation());
 }
 
