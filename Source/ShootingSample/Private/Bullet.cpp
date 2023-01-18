@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EnemyActor.h"
+#include "ShootingPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShootingSampleGameModeBase.h"
 
@@ -32,7 +33,8 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlap);
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlapEnemy);
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlapPlayer);
 }
 
 // Called every frame
@@ -46,11 +48,15 @@ void ABullet::Tick(float DeltaTime)
 	SetActorLocation(newLocation);
 }
 
-void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 							  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 							  bool bFromSweep, const FHitResult& SweepResult)
 {
 	AEnemyActor* enemy = Cast<AEnemyActor>(OtherActor);
+	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
+
+	AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
+	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
 
 	if (enemy != nullptr)
 	{
@@ -58,13 +64,37 @@ void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
 
-		AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
-
-		AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
-
 		if (currentGameModeBase != nullptr)
 		{
 			currentGameModeBase->AddScore(1);
+		}
+	}
+	
+
+	Destroy();
+}
+
+void ABullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
+
+	AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
+	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
+
+	if (player != nullptr)
+	{
+		OtherActor->Destroy();
+
+		currentGameModeBase->PlayerOnHit(1);
+
+		if (currentGameModeBase->playerLife <= 0)
+		{
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			currentGameModeBase->GameOver();
+		}
+		else
+		{
+			currentGameModeBase->RestartPlayer(GetWorld()->GetFirstPlayerController());
 		}
 	}
 

@@ -30,7 +30,7 @@ public:
 	class UStaticMeshComponent* meshComp;
 
 	UPROPERTY(EditAnywhere)
-	class UArrowComponent* firePosition;
+	class UArrowComponent* enemyFirePosition;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABullet> bulletFactory;
@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float moveSpeed = 800;
 
+	UPROPERTY(EditAnywhere)
+	float bulletDelayTime = 1.0f;
+
 	UFUNCTION()
 	void OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
@@ -48,6 +51,7 @@ public:
 
 private:
 	FVector dir;
+	float bulletCurrentTime = 0;
 
 	void EnemyFire();
 };

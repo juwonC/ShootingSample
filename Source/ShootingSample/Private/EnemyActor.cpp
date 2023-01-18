@@ -26,8 +26,8 @@ AEnemyActor::AEnemyActor()
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(boxComp);
 
-	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
-	firePosition->SetupAttachment(boxComp);
+	enemyFirePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
+	enemyFirePosition->SetupAttachment(boxComp);
 
 	// Set Enemy Collision Preset
 	boxComp->SetCollisionProfileName(TEXT("Enemy"));
@@ -72,7 +72,16 @@ void AEnemyActor::Tick(float DeltaTime)
 	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
 	SetActorLocation(newLocation);
 
-	EnemyFire();
+	if (bulletCurrentTime > bulletDelayTime)
+	{
+		bulletCurrentTime = 0;
+
+		EnemyFire();
+	}
+	else
+	{
+		bulletCurrentTime += DeltaTime;
+	}
 }
 
 void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
@@ -107,7 +116,7 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AEnemyActor::EnemyFire()
 {
-	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, firePosition->GetComponentLocation(),
-		firePosition->GetComponentRotation());
+	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, enemyFirePosition->GetComponentLocation(),
+		enemyFirePosition->GetComponentRotation());
 }
 
