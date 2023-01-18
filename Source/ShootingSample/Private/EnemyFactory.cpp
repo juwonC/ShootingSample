@@ -29,10 +29,7 @@ void AEnemyFactory::Tick(float DeltaTime)
 	{
 		currentTime = 0;
 
-		for (int i = 0; i < 3; ++i)
-		{
-			AEnemyActor* spawnActor = GetWorld()->SpawnActor<AEnemyActor>(enemy[i], GetActorLocation(), GetActorRotation());
-		}
+		AEnemyActor* spawnActor = GetWorld()->SpawnActor<AEnemyActor>(enemy, GetActorLocation(), GetActorRotation());
 	}
 	else
 	{
