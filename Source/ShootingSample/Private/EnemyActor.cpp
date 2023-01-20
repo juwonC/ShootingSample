@@ -7,6 +7,7 @@
 #include "Components/ArrowComponent.h"
 #include "ShootingPlayer.h"
 #include "Bullet.h"
+#include "EnemyBullet.h"
 #include "EngineUtils.h"
 #include "ShootingSampleGameModeBase.h"
 #include "GameFramework/Pawn.h"
@@ -97,6 +98,8 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		{
 			OtherActor->Destroy();
 
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
 			currentGameMode->PlayerOnHit(1);
 
 			if (currentGameMode->playerLife <= 0)
@@ -116,7 +119,7 @@ void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AEnemyActor::EnemyFire()
 {
-	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, enemyFirePosition->GetComponentLocation(),
+	AEnemyBullet* enemyBullet = GetWorld()->SpawnActor<AEnemyBullet>(enemyBulletFactory, enemyFirePosition->GetComponentLocation(),
 		enemyFirePosition->GetComponentRotation());
 }
 

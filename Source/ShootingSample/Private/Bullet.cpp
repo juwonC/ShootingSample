@@ -34,7 +34,6 @@ void ABullet::BeginPlay()
 	Super::BeginPlay();
 	
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlapEnemy);
-	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlapPlayer);
 }
 
 // Called every frame
@@ -73,31 +72,3 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 
 	Destroy();
 }
-
-void ABullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
-
-	AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
-	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
-
-	if (player != nullptr)
-	{
-		OtherActor->Destroy();
-
-		currentGameModeBase->PlayerOnHit(1);
-
-		if (currentGameModeBase->playerLife <= 0)
-		{
-			UGameplayStatics::SetGamePaused(GetWorld(), true);
-			currentGameModeBase->GameOver();
-		}
-		else
-		{
-			currentGameModeBase->RestartPlayer(GetWorld()->GetFirstPlayerController());
-		}
-	}
-
-	Destroy();
-}
-

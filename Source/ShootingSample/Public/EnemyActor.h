@@ -36,6 +36,9 @@ public:
 	TSubclassOf<class ABullet> bulletFactory;
 
 	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AEnemyBullet> enemyBulletFactory;
+
+	UPROPERTY(EditAnywhere)
 	int32 traceRate = 50;
 
 	UPROPERTY(EditAnywhere)
@@ -43,6 +46,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float bulletDelayTime = 1.0f;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* explosionFX;
 
 	UFUNCTION()
 	void OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
