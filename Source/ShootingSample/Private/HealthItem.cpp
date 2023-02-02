@@ -4,8 +4,6 @@
 #include "HealthItem.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "NiagaraFunctionLibrary.h"
-#include "NiagaraComponent.h"
 
 // Sets default values
 AHealthItem::AHealthItem()
@@ -25,7 +23,6 @@ void AHealthItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// TODO: Set NiagaraSystem
 }
 
 // Called every frame
@@ -33,5 +30,6 @@ void AHealthItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddActorLocalRotation(FRotator(0.0f, rotateSpeed * DeltaTime, 0.0f));
 }
 

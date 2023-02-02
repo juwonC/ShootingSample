@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "HealthItem.generated.h"
 
-class UNiagaraSystem;
-
 UCLASS()
 class SHOOTINGSAMPLE_API AHealthItem : public AActor
 {
@@ -32,5 +30,8 @@ public:
 	class UStaticMeshComponent* meshComp;
 
 	UPROPERTY(EditAnywhere)
-	class UNiagaraSystem* niagara;
+	float rotateSpeed = 50.0f;
+
+	UPROPERTY(EditAnywhere)
+	float moveSpeed = 90.0f;
 };
