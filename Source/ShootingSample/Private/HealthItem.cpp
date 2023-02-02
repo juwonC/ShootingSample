@@ -4,6 +4,7 @@
 #include "HealthItem.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/ArrowComponent.h"
 
 // Sets default values
 AHealthItem::AHealthItem()
@@ -13,6 +14,8 @@ AHealthItem::AHealthItem()
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("HealthItem Box Component"));
 	SetRootComponent(boxComp);
+	
+	boxComp->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HealthItem Static Mesh"));
 	meshComp->SetupAttachment(boxComp);
@@ -31,5 +34,9 @@ void AHealthItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AddActorLocalRotation(FRotator(0.0f, rotateSpeed * DeltaTime, 0.0f));
+
+	FVector newLocation = GetActorLocation() + GetActorUpVector() * -1 * moveSpeed * DeltaTime;
+
+	SetActorLocation(newLocation);
 }
 
