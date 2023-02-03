@@ -35,10 +35,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AHealthItem> health;
+
 	UFUNCTION()
 	void OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 						 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 						 bool bFromSweep, const FHitResult& SweepResult);
 
-	
+private:
+	int32 random = FMath::RandRange(1, 4);
 };

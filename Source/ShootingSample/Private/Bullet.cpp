@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "EnemyActor.h"
 #include "ShootingPlayer.h"
+#include "HealthItem.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShootingSampleGameModeBase.h"
 
@@ -66,6 +67,12 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 		if (currentGameModeBase != nullptr)
 		{
 			currentGameModeBase->AddScore(1);
+		}
+
+
+		if (random == 1)
+		{
+			AHealthItem* healthItem = GetWorld()->SpawnActor<AHealthItem>(health, GetActorLocation(), FRotator::ZeroRotator);
 		}
 	}
 	
