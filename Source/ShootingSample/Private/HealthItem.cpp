@@ -2,9 +2,12 @@
 
 
 #include "HealthItem.h"
+#include "ShootingPlayer.h"
+#include "ShootingSampleGameModeBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AHealthItem::AHealthItem()
@@ -19,6 +22,8 @@ AHealthItem::AHealthItem()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HealthItem Static Mesh"));
 	meshComp->SetupAttachment(boxComp);
+
+	boxComp->SetCollisionProfileName(TEXT("Item"));
 }
 
 // Called when the game starts or when spawned
@@ -26,6 +31,7 @@ void AHealthItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AHealthItem::OnItemOverlap);
 }
 
 // Called every frame
@@ -40,3 +46,7 @@ void AHealthItem::Tick(float DeltaTime)
 	SetActorLocation(newLocation);
 }
 
+void AHealthItem::OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Destroy();
+}

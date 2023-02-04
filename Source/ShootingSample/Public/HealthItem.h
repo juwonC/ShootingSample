@@ -34,4 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float moveSpeed = 90.0f;
+
+	UFUNCTION()
+	void OnItemOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+			UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+			bool bFromSweep, const FHitResult& SweepResult);
 };
