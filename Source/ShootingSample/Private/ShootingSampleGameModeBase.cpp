@@ -83,16 +83,26 @@ void AShootingSampleGameModeBase::PlayerOnHit(int32 life)
 
 void AShootingSampleGameModeBase::UpdateLifeImage()
 {	
-	if (playerLife == 2)
+	mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+	mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+	mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+
+	if (playerLife == 3)
+	{
+		mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
+		mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
+		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
+	}
+	else if (playerLife == 2)
 	{
 		mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+		mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
+		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 	}
 	else if (playerLife == 1)
 	{
+		mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
 		mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
-	}
-	else if (playerLife == 0)
-	{
-		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 	}
 }
