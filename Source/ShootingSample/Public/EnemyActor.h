@@ -33,9 +33,6 @@ public:
 	class UArrowComponent* enemyFirePosition;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ABullet> bulletFactory;
-
-	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AEnemyBullet> enemyBulletFactory;
 
 	UPROPERTY(EditAnywhere)
