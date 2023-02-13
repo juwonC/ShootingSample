@@ -27,13 +27,31 @@ ABoss::ABoss()
 void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	startLocation = GetActorLocation();
+	stopLocation = GetActorLocation() + FVector(0, 0, -500);
+
+	dir = stopLocation - startLocation;
+
+	totalDistance = dir.Size();
+
+	dir = dir.GetSafeNormal();
+	currentDistance = 0.0f;
 }
 
 // Called every frame
 void ABoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (currentDistance < totalDistance)
+	{
+		FVector newLocation = GetActorLocation();
 
+		newLocation += dir * moveSpeed * DeltaTime;
+
+		SetActorLocation(newLocation);
+
+		currentDistance = (newLocation - startLocation).Size();
+	}
 }
-

@@ -16,16 +16,19 @@ public:
 	ABoss();
 
 	UPROPERTY(EditAnywhere)
-		class UBoxComponent* boxComp;
+	class UBoxComponent* boxComp;
 
 	UPROPERTY(EditAnywhere)
-		class UStaticMeshComponent* meshComp;
+	class UStaticMeshComponent* meshComp;
 
 	UPROPERTY(EditAnywhere)
-		class UArrowComponent* bossFirePosition;
+	class UArrowComponent* bossFirePosition;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AEnemyBullet> bossBulletFactory;
+	float moveSpeed = 200;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AEnemyBullet> bossBulletFactory;
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,4 +38,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	FVector dir;
+	FVector startLocation;
+	FVector stopLocation;
+
+	float totalDistance;
+	float currentDistance;
+	
 };
