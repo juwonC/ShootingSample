@@ -44,14 +44,21 @@ void ABoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (currentDistance < totalDistance)
+	if (currentTime > delayTime)
+	{	
+		if (currentDistance < totalDistance)
+		{
+			FVector newLocation = GetActorLocation();
+
+			newLocation += dir * moveSpeed * DeltaTime;
+
+			SetActorLocation(newLocation);
+
+			currentDistance = (newLocation - startLocation).Size();
+		}
+	}
+	else
 	{
-		FVector newLocation = GetActorLocation();
-
-		newLocation += dir * moveSpeed * DeltaTime;
-
-		SetActorLocation(newLocation);
-
-		currentDistance = (newLocation - startLocation).Size();
+		currentTime += DeltaTime;
 	}
 }
