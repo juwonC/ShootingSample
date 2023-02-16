@@ -28,7 +28,10 @@ public:
 	float moveSpeed = 200;
 
 	UPROPERTY(EditAnywhere)
-		float delayTime = 10.0f;
+	float delayTime = 10.0f;
+
+	UPROPERTY(EditAnywhere)
+	float bulletDelayTime = 2.5f;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AEnemyBullet> bossBulletFactory;
@@ -49,4 +52,8 @@ private:
 	float totalDistance;
 	float currentDistance;
 	float currentTime = 0;
+
+	float bulletCurrentTime = 0;
+
+	void BossFire();
 };

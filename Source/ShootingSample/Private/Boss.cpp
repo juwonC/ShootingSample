@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
+#include "EnemyBullet.h"
 
 // Sets default values
 ABoss::ABoss()
@@ -56,9 +57,26 @@ void ABoss::Tick(float DeltaTime)
 
 			currentDistance = (newLocation - startLocation).Size();
 		}
+
+		if (bulletCurrentTime > bulletDelayTime)
+		{
+			bulletCurrentTime = 0;
+
+			BossFire();
+		}
+		else
+		{
+			bulletCurrentTime += DeltaTime;
+		}
 	}
 	else
 	{
 		currentTime += DeltaTime;
 	}
+}
+
+void ABoss::BossFire()
+{
+	AEnemyBullet* bossBullet = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(),
+		bossFirePosition->GetComponentRotation());
 }
