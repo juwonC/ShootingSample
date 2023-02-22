@@ -34,6 +34,12 @@ public:
 	float bulletDelayTime = 2.5f;
 
 	UPROPERTY(EditAnywhere)
+	int32 bossHP = 10;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* explosionFX;
+
+	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AEnemyBullet> bossBulletFactory;
 
 protected:
@@ -44,6 +50,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+			UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+			bool bFromSweep, const FHitResult& SweepResult);
+
+	int32 GetBossHP();
+	void HitByBullet(int32 damage);
+
 private:
 	FVector dir;
 	FVector startLocation;
@@ -52,7 +66,6 @@ private:
 	float totalDistance;
 	float currentDistance;
 	float currentTime = 0;
-
 	float bulletCurrentTime = 0;
 
 	void BossFire();

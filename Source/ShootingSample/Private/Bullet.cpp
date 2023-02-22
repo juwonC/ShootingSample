@@ -7,6 +7,7 @@
 #include "EnemyActor.h"
 #include "ShootingPlayer.h"
 #include "HealthItem.h"
+#include "Boss.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShootingSampleGameModeBase.h"
 
@@ -53,14 +54,14 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 							  bool bFromSweep, const FHitResult& SweepResult)
 {
 	AEnemyActor* enemy = Cast<AEnemyActor>(OtherActor);
-	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
+	ABoss* boss = Cast<ABoss>(OtherActor);
 
 	AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
 	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
 
 	if (enemy != nullptr)
 	{
-		OtherActor->Destroy();
+		enemy->Destroy();
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
 
@@ -69,13 +70,23 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 			currentGameModeBase->AddScore(1);
 		}
 
-
 		if (random == 1)
 		{
 			AHealthItem* healthItem = GetWorld()->SpawnActor<AHealthItem>(health, GetActorLocation(), FRotator::ZeroRotator);
 		}
 	}
-	
+
+	if (boss != nullptr)
+	{
+		boss->HitByBullet(1);
+
+		if (boss->GetBossHP() <= 0)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
+			boss->Destroy();
+		}
+	}
 
 	Destroy();
 }

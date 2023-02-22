@@ -6,6 +6,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
 #include "EnemyBullet.h"
+#include "ShootingPlayer.h"
+#include "ShootingSampleGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABoss::ABoss()
@@ -38,6 +41,8 @@ void ABoss::BeginPlay()
 
 	dir = dir.GetSafeNormal();
 	currentDistance = 0.0f;
+
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABoss::OnBossOverlap);
 }
 
 // Called every frame
@@ -75,8 +80,46 @@ void ABoss::Tick(float DeltaTime)
 	}
 }
 
+void ABoss::OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
+	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	if (currentGameMode != nullptr)
+	{
+		if (player != nullptr)
+		{
+			OtherActor->Destroy();
+
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
+			currentGameMode->PlayerOnHit(1);
+
+			if (currentGameMode->playerLife <= 0)
+			{
+				UGameplayStatics::SetGamePaused(GetWorld(), true);
+				currentGameMode->GameOver();
+			}
+			else
+			{
+				currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
+			}
+		}
+	}
+}
+
 void ABoss::BossFire()
 {
 	AEnemyBullet* bossBullet = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(),
 		bossFirePosition->GetComponentRotation());
+}
+
+int32 ABoss::GetBossHP()
+{
+	return bossHP;
+}
+
+void ABoss::HitByBullet(int32 damage)
+{
+	bossHP -= damage;
 }
