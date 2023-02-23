@@ -112,6 +112,18 @@ void ABoss::BossFire()
 {
 	AEnemyBullet* bossBullet = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(),
 		bossFirePosition->GetComponentRotation());
+
+	AEnemyBullet* bossBullet1 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, 50, 0),
+		bossFirePosition->GetComponentRotation());
+
+	AEnemyBullet* bossBullet2 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, -50, 0),
+		bossFirePosition->GetComponentRotation());
+
+	AEnemyBullet* bossBullet4 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, 100, 0),
+		bossFirePosition->GetComponentRotation());
+
+	AEnemyBullet* bossBullet5 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, -100, 0),
+		bossFirePosition->GetComponentRotation());
 }
 
 int32 ABoss::GetBossHP()
