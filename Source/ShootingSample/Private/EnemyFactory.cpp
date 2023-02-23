@@ -3,6 +3,7 @@
 
 #include "EnemyFactory.h"
 #include "EnemyActor.h"
+#include "Obstacle.h"
 
 // Sets default values
 AEnemyFactory::AEnemyFactory()
@@ -29,7 +30,14 @@ void AEnemyFactory::Tick(float DeltaTime)
 	{
 		currentTime = 0;
 
-		AEnemyActor* spawnActor = GetWorld()->SpawnActor<AEnemyActor>(enemy, GetActorLocation(), GetActorRotation());
+		if (enemy != nullptr)
+		{
+			AEnemyActor* spawnEnemy = GetWorld()->SpawnActor<AEnemyActor>(enemy, GetActorLocation(), GetActorRotation());
+		}
+		else if (obstacle != nullptr)
+		{
+			AObstacle* spawnObstacle = GetWorld()->SpawnActor<AObstacle>(obstacle, GetActorLocation(), GetActorRotation());
+		}
 	}
 	else
 	{

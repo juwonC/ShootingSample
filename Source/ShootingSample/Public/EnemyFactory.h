@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AEnemyActor> enemy;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AObstacle> obstacle;
+
 private:
 	float currentTime = 0;
 };

@@ -8,6 +8,7 @@
 #include "ShootingPlayer.h"
 #include "HealthItem.h"
 #include "Boss.h"
+#include "Obstacle.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShootingSampleGameModeBase.h"
 
@@ -55,6 +56,7 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 {
 	AEnemyActor* enemy = Cast<AEnemyActor>(OtherActor);
 	ABoss* boss = Cast<ABoss>(OtherActor);
+	AObstacle* obstacle = Cast<AObstacle>(OtherActor);
 
 	AGameModeBase* currentMode = GetWorld()->GetAuthGameMode();
 	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(currentMode);
@@ -85,6 +87,18 @@ void ABullet::OnBulletOverlapEnemy(UPrimitiveComponent* OverlappedComponent, AAc
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
 
 			boss->Destroy();
+		}
+	}
+
+	if (obstacle != nullptr)
+	{
+		obstacle->Destroy();
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
+
+		if (currentGameModeBase != nullptr)
+		{
+			currentGameModeBase->AddScore(1);
 		}
 	}
 
