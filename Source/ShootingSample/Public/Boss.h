@@ -40,7 +40,7 @@ public:
 	class UParticleSystem* explosionFX;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AEnemyBullet> bossBulletFactory;
+	TSubclassOf<class ABossBullet> bossBulletFactory;
 
 protected:
 	// Called when the game starts or when spawned
@@ -68,5 +68,5 @@ private:
 	float currentTime = 0;
 	float bulletCurrentTime = 0;
 
-	void BossFire();
+	void BossFire(float DeltaTime);
 };
