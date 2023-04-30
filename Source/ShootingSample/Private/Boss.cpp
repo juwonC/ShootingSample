@@ -111,22 +111,7 @@ void ABoss::OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 void ABoss::BossFire(float DeltaTime)
 {
-	//AEnemyBullet* bossBullet = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(),
-	//	bossFirePosition->GetComponentRotation());
-
-	//AEnemyBullet* bossBullet1 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, 50, 0),
-	//	bossFirePosition->GetComponentRotation());
-
-	//AEnemyBullet* bossBullet2 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, -50, 0),
-	//	bossFirePosition->GetComponentRotation());
-
-	//AEnemyBullet* bossBullet4 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, 100, 0),
-	//	bossFirePosition->GetComponentRotation());
-
-	//AEnemyBullet* bossBullet5 = GetWorld()->SpawnActor<AEnemyBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation() + FVector(0, -100, 0),
-	//	bossFirePosition->GetComponentRotation());
-
-	ABossBullet* bossBullet = GetWorld()->SpawnActor<ABossBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(), 
+	ABossBullet* bossBullet = GetWorld()->SpawnActor<ABossBullet>(bossBulletFactory, bossFirePosition->GetComponentLocation(),
 		bossFirePosition->GetComponentRotation());
 }
 

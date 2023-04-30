@@ -7,6 +7,8 @@
 #include "ShootingPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShootingSampleGameModeBase.h"
+#include "EngineUtils.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ABossBullet::ABossBullet()
@@ -32,6 +34,21 @@ void ABossBullet::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	for (TActorIterator<AShootingPlayer> player(GetWorld()); player; ++player)
+	{
+		if (player->GetName().Contains(TEXT("BP_ShootingPlayer")))
+		{
+			dir = player->GetActorLocation() - GetActorLocation();
+			dir.Normalize();
+
+			FVector upVector = this->GetActorUpVector();
+			FRotator newRotation = UKismetMathLibrary::MakeRotFromXZ(dir, upVector);
+			SetActorRotation(newRotation, ETeleportType::None);
+		}
+	}
+
+	dirSin = FVector(0, FMath::Sin(PI / curPatternCount * 10), 0);
+
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABossBullet::OnBulletOverlapPlayer);
 }
 
@@ -39,12 +56,8 @@ void ABossBullet::BeginPlay()
 void ABossBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
-	float deltaHeight = FMath::Sin(DeltaTime * PI * 2);
-	newLocation.Y += deltaHeight * 50.0f;
-
-	SetActorLocation(newLocation);
+	
+	FireGuided(DeltaTime);
 }
 
 void ABossBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -74,4 +87,97 @@ void ABossBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent
 	}
 
 	Destroy();
+}
+
+void ABossBullet::FirePattern(float DeltaTime)
+{
+	patternIndex = patternIndex == 3 ? 0 : patternIndex + 1;
+	curPatternCount = 0;
+
+	switch (patternIndex)
+	{
+	case 0:
+		FireForward(DeltaTime);
+		break;
+
+	case 1:
+		FireShot(DeltaTime);
+		break;
+
+	case 2:
+		FireArc(DeltaTime);
+		break;
+
+	case 3:
+		FireAround(DeltaTime);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void ABossBullet::FireGuided(float DeltaTime)
+{
+	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
+
+	SetActorLocation(newLocation);
+}
+
+void ABossBullet::FireForward(float DeltaTime)
+{
+	FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+
+	SetActorLocation(newLocation);
+
+	++curPatternCount;
+
+	UE_LOG(LogTemp, Log, TEXT("FireForward"));
+}
+
+void ABossBullet::FireShot(float DeltaTime)
+{
+	//FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+	//FVector* ranVec = new FVector(FMath::RandRange(-5.0f, 5.0f), FMath::RandRange(0.0f, 10.0f), 0);
+
+	//newLocation += *ranVec;
+
+	//SetActorLocation(newLocation);
+
+	++curPatternCount;
+
+	UE_LOG(LogTemp, Log, TEXT("FireShot"));
+}
+
+void ABossBullet::FireArc(float DeltaTime)
+{		
+	FVector newLocation = GetActorLocation() + GetActorForwardVector() + dirSin * moveSpeed * DeltaTime;
+	
+	float y = FMath::Sin(PI / curPatternCount * 2);
+	//FMath::Sin(PI * 360 / curPatternCount * 10);
+
+	SetActorLocation(newLocation);
+
+	UE_LOG(LogTemp, Log, TEXT("FireArc"));
+
+	++curPatternCount;
+}
+
+void ABossBullet::FireAround(float DeltaTime)
+{
+	//FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+	//
+	//FVector dirVec = FVector(FMath::Sin(PI * DeltaTime * 2), FMath::Sin(PI * DeltaTime * 2), -1);
+	//newLocation += dirVec;
+	//
+	//SetActorLocation(newLocation);
+
+	++curPatternCount;
+
+	UE_LOG(LogTemp, Log, TEXT("FireAround"));
+}
+
+int32 ABossBullet::GetFirePatternIndex()
+{
+	return patternIndex;
 }

@@ -24,9 +24,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
-	float moveSpeed = 900.0f;
-
-	UPROPERTY(EditAnywhere)
 	class UBoxComponent* boxComp;
 
 	UPROPERTY(EditAnywhere)
@@ -35,8 +32,34 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
 
+	UPROPERTY(EditAnywhere)
+	float moveSpeed = 900.0f;
+
+	UPROPERTY(EditAnywhere)
+	float patternDelayTime = 10.0f;
+
+	UPROPERTY(EditAnywhere)
+	TArray<float> maxPatternIndex;
+
 	UFUNCTION()
 	void OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 			UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 			bool bFromSweep, const FHitResult& SweepResult);
+
+private:
+	float patternCurTime = 0;
+	int32 patternIndex = 0;
+	int32 curPatternCount = 1;
+	FVector dir;
+	FVector dirSin;
+
+	void FirePattern(float DeltaTime);
+	void FireGuided(float DeltaTime);
+	void FireForward(float DeltaTime);
+	void FireShot(float DeltaTime);
+	void FireArc(float DeltaTime);
+	void FireAround(float DeltaTime);
+
+public:
+	int32 GetFirePatternIndex();
 };
