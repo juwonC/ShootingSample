@@ -2,6 +2,7 @@
 
 
 #include "ShootingSampleGameModeBase.h"
+#include "ShootingPlayer.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
@@ -83,10 +84,8 @@ void AShootingSampleGameModeBase::PlayerOnHit(int32 life)
 
 void AShootingSampleGameModeBase::UpdateLifeImage()
 {	
-	mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
-	mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
-	mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
-
+	// 플레이어 라이프에 따라 라이프 UI 알파값을 따로 지정해 화면에 표시하거나 숨김
+	
 	if (playerLife == 3)
 	{
 		mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
@@ -105,4 +104,20 @@ void AShootingSampleGameModeBase::UpdateLifeImage()
 		mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
 		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 	}
+	else if (playerLife == 0)
+	{
+		mainUI->lifeImage_0->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+		mainUI->lifeImage_1->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
+	}
+}
+
+void AShootingSampleGameModeBase::RespawnPlayer()
+{
+	// respawnDelayTime 만큼의 시간(초) 뒤에 플레이어 리스폰
+	
+	GetWorldTimerManager().SetTimer(respawnTimeHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			RestartPlayer(GetWorld()->GetFirstPlayerController());
+		}), respawnDelayTime, false);
 }

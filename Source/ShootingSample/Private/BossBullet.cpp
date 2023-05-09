@@ -47,7 +47,9 @@ void ABossBullet::BeginPlay()
 		}
 	}
 
-	dirSin = FVector(0, FMath::Sin(PI / curPatternCount * 10), 0);
+	// dirSin = FVector(0, FMath::Sin(PI * curPatternCount / maxPatternIndex[patternIndex] * 2), -1);
+
+	// dirSin = FVector(0, FMath::Sin(PI * -3 * 2), FMath::Cos(PI * 3 * 2));
 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABossBullet::OnBulletOverlapPlayer);
 }
@@ -56,7 +58,7 @@ void ABossBullet::BeginPlay()
 void ABossBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 	FireGuided(DeltaTime);
 }
 
@@ -82,39 +84,25 @@ void ABossBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent
 		}
 		else
 		{
-			currentGameModeBase->RestartPlayer(GetWorld()->GetFirstPlayerController());
+			// OtherActor->Destroy();
+
+			// 시작지점 Location [X = 0, Y = 0, Z = -400]에 충돌이 있어서 액터를 스폰할 수 없다는 오류 발생
+			// 사망 후 일정시간 동안 무적이 되게 하여 해결?? -> 타이머로 구현
+
+			// GameModeBase에 플레이어를 리스폰하는 함수 따로 구현
+			// currentGameModeBase->RestartPlayer(GetWorld()->GetFirstPlayerController());
+			
+			currentGameModeBase->RespawnPlayer();
+
+			currentGameModeBase->isPlayerDie = true;
+
+			player->PlayerRevive(currentGameModeBase->isPlayerDie);
+
+			currentGameModeBase->isPlayerDie = false;
 		}
 	}
 
 	Destroy();
-}
-
-void ABossBullet::FirePattern(float DeltaTime)
-{
-	patternIndex = patternIndex == 3 ? 0 : patternIndex + 1;
-	curPatternCount = 0;
-
-	switch (patternIndex)
-	{
-	case 0:
-		FireForward(DeltaTime);
-		break;
-
-	case 1:
-		FireShot(DeltaTime);
-		break;
-
-	case 2:
-		FireArc(DeltaTime);
-		break;
-
-	case 3:
-		FireAround(DeltaTime);
-		break;
-
-	default:
-		break;
-	}
 }
 
 void ABossBullet::FireGuided(float DeltaTime)
@@ -151,7 +139,7 @@ void ABossBullet::FireShot(float DeltaTime)
 
 void ABossBullet::FireArc(float DeltaTime)
 {		
-	FVector newLocation = GetActorLocation() + GetActorForwardVector() + dirSin * moveSpeed * DeltaTime;
+	FVector newLocation = GetActorLocation() + dirSin * moveSpeed * DeltaTime;
 	
 	float y = FMath::Sin(PI / curPatternCount * 2);
 	//FMath::Sin(PI * 360 / curPatternCount * 10);
@@ -165,16 +153,17 @@ void ABossBullet::FireArc(float DeltaTime)
 
 void ABossBullet::FireAround(float DeltaTime)
 {
-	//FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+	FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
 	//
 	//FVector dirVec = FVector(FMath::Sin(PI * DeltaTime * 2), FMath::Sin(PI * DeltaTime * 2), -1);
 	//newLocation += dirVec;
 	//
-	//SetActorLocation(newLocation);
+	SetActorLocation(newLocation);
 
 	++curPatternCount;
 
 	UE_LOG(LogTemp, Log, TEXT("FireAround"));
+
 }
 
 int32 ABossBullet::GetFirePatternIndex()

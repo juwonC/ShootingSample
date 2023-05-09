@@ -49,11 +49,14 @@ public:
 private:
 	float patternCurTime = 0;
 	int32 patternIndex = 0;
-	int32 curPatternCount = 1;
+	int32 curPatternCount = 0;
 	FVector dir;
 	FVector dirSin;
+	FVector dirAround;
+	FTimerHandle waitHandle;
 
-	void FirePattern(float DeltaTime);
+	float waitTime = 2.0f;
+
 	void FireGuided(float DeltaTime);
 	void FireForward(float DeltaTime);
 	void FireShot(float DeltaTime);

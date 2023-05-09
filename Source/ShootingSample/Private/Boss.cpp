@@ -10,6 +10,7 @@
 #include "ShootingSampleGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "EngineUtils.h"
 
 // Sets default values
 ABoss::ABoss()
@@ -84,9 +85,9 @@ void ABoss::Tick(float DeltaTime)
 void ABoss::OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AShootingPlayer* player = Cast<AShootingPlayer>(OtherActor);
-	AShootingSampleGameModeBase* currentGameMode = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
+	AShootingSampleGameModeBase* currentGameModeBase = Cast<AShootingSampleGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	if (currentGameMode != nullptr)
+	if (currentGameModeBase != nullptr)
 	{
 		if (player != nullptr)
 		{
@@ -94,16 +95,24 @@ void ABoss::OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
 
-			currentGameMode->PlayerOnHit(1);
+			currentGameModeBase->PlayerOnHit(1);
 
-			if (currentGameMode->playerLife <= 0)
+			if (currentGameModeBase->playerLife <= 0)
 			{
 				UGameplayStatics::SetGamePaused(GetWorld(), true);
-				currentGameMode->GameOver();
+				currentGameModeBase->GameOver();
 			}
 			else
 			{
-				currentGameMode->RestartPlayer(GetWorld()->GetFirstPlayerController());
+				OtherActor->Destroy();
+
+				currentGameModeBase->RespawnPlayer();
+
+				currentGameModeBase->isPlayerDie = true;
+
+				player->PlayerRevive(currentGameModeBase->isPlayerDie);
+
+				currentGameModeBase->isPlayerDie = false;
 			}
 		}
 	}

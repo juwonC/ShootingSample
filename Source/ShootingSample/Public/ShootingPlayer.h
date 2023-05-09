@@ -26,6 +26,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void PlayerRevive(bool isPlayerDie);
+
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* boxComp;
 
@@ -46,6 +48,10 @@ public:
 	class USoundBase* fireSound;
 
 private:
+	FTimerHandle timerHandle;
+
+	float ignoreDamageTime = 5.0f;
+
 	// input keybinding variables
 	float h;
 	float v;

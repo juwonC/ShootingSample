@@ -89,6 +89,21 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AShootingPlayer::Pause);
 }
 
+void AShootingPlayer::PlayerRevive(bool isPlayerDie)
+{
+	if (isPlayerDie == true)
+	{
+		GetWorldTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([&]()
+			{
+				this->SetActorEnableCollision(false);
+			}), ignoreDamageTime, false);
+		
+		
+	}
+
+	this->SetActorEnableCollision(true);
+}
+
 void AShootingPlayer::MoveHorizontal(float value)
 {
 	// Assign input Axis values to h
@@ -118,4 +133,3 @@ void AShootingPlayer::Pause()
 		currentGameMode->PauseGame();
 	}
 }
-

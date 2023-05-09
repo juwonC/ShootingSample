@@ -16,6 +16,7 @@ class SHOOTINGSAMPLE_API AShootingSampleGameModeBase : public AGameModeBase
 
 public:
 	int32 playerLife = 3;
+	bool isPlayerDie = false;
 	
 	void AddScore(int32 point);
 	void PlayerOnHit(int32 life);
@@ -34,11 +35,17 @@ public:
 	void PrintScore();
 	void UpdateLifeImage();
 
+	UFUNCTION()
+	void RespawnPlayer();
+
 protected:
 	virtual void BeginPlay() override;
 	
 private:
+	FTimerHandle respawnTimeHandle;
 	int32 currentScore = 0;
+
+	float respawnDelayTime = 2.0f;
 
 	class UMainWidget* mainUI;
 
