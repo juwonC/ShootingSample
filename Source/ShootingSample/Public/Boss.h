@@ -57,8 +57,13 @@ public:
 
 	int32 GetBossHP();
 	void HitByBullet(int32 damage);
+	void IgnoreDamage();
 
 private:
+	FTimerHandle bossTimerHandle;
+
+	float bossIgnoreTime = 15.0f;
+
 	FVector dir;
 	FVector startLocation;
 	FVector stopLocation;

@@ -53,9 +53,6 @@ private:
 	FVector dir;
 	FVector dirSin;
 	FVector dirAround;
-	FTimerHandle waitHandle;
-
-	float waitTime = 2.0f;
 
 	void FireGuided(float DeltaTime);
 	void FireForward(float DeltaTime);

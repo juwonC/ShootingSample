@@ -71,8 +71,6 @@ void ABossBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent
 
 	if (player != nullptr)
 	{
-		OtherActor->Destroy();
-
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation(), GetActorRotation());
 
 		currentGameModeBase->PlayerOnHit(1);
@@ -84,21 +82,12 @@ void ABossBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponent
 		}
 		else
 		{
-			// OtherActor->Destroy();
-
 			// 시작지점 Location [X = 0, Y = 0, Z = -400]에 충돌이 있어서 액터를 스폰할 수 없다는 오류 발생
-			// 사망 후 일정시간 동안 무적이 되게 하여 해결?? -> 타이머로 구현
+			// 사망 후 일정시간 동안 무적이 되게 하여 해결
 
-			// GameModeBase에 플레이어를 리스폰하는 함수 따로 구현
-			// currentGameModeBase->RestartPlayer(GetWorld()->GetFirstPlayerController());
-			
-			currentGameModeBase->RespawnPlayer();
+			player->RespawnPlayer();
 
-			currentGameModeBase->isPlayerDie = true;
-
-			player->PlayerRevive(currentGameModeBase->isPlayerDie);
-
-			currentGameModeBase->isPlayerDie = false;
+			player->PlayerInvuln();
 		}
 	}
 

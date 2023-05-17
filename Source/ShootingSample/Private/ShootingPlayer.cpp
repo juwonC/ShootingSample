@@ -89,19 +89,21 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AShootingPlayer::Pause);
 }
 
-void AShootingPlayer::PlayerRevive(bool isPlayerDie)
+void AShootingPlayer::PlayerInvuln()
 {
-	if (isPlayerDie == true)
-	{
-		GetWorldTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([&]()
-			{
-				this->SetActorEnableCollision(false);
-			}), ignoreDamageTime, false);
-		
-		
-	}
+	// 충돌 비활성화로 무적 상태
+	this->SetActorEnableCollision(false);
 
-	this->SetActorEnableCollision(true);
+	// ignoreDamageTime의 시간(초) 뒤에 충돌 활성화
+	GetWorldTimerManager().SetTimer(playerTimerHandle, FTimerDelegate::CreateLambda([&]()
+	{
+			this->SetActorEnableCollision(true);
+	}), ignoreDamageTime, false);
+}
+
+void AShootingPlayer::RespawnPlayer()
+{
+	GetWorld()->GetAuthGameMode()->RestartPlayer(GetWorld()->GetFirstPlayerController());
 }
 
 void AShootingPlayer::MoveHorizontal(float value)

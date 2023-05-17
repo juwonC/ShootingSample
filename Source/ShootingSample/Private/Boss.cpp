@@ -45,6 +45,14 @@ void ABoss::BeginPlay()
 	currentDistance = 0.0f;
 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABoss::OnBossOverlap);
+
+	// bossIgnoreTime 만큼의 시간이 흐른뒤 충돌 판정
+	this->SetActorEnableCollision(false);
+
+	GetWorldTimerManager().SetTimer(bossTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			this->SetActorEnableCollision(true);
+		}), bossIgnoreTime, false);
 }
 
 // Called every frame
@@ -104,15 +112,9 @@ void ABoss::OnBossOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 			}
 			else
 			{
-				OtherActor->Destroy();
+				player->RespawnPlayer();
 
-				currentGameModeBase->RespawnPlayer();
-
-				currentGameModeBase->isPlayerDie = true;
-
-				player->PlayerRevive(currentGameModeBase->isPlayerDie);
-
-				currentGameModeBase->isPlayerDie = false;
+				player->PlayerInvuln();
 			}
 		}
 	}
@@ -132,4 +134,14 @@ int32 ABoss::GetBossHP()
 void ABoss::HitByBullet(int32 damage)
 {
 	bossHP -= damage;
+}
+
+void ABoss::IgnoreDamage()
+{
+	this->SetActorEnableCollision(false);
+	
+	GetWorldTimerManager().SetTimer(bossTimerHandle, FTimerDelegate::CreateLambda([&]()
+	{
+		this->SetActorEnableCollision(true);
+	}), bossIgnoreTime, false);
 }

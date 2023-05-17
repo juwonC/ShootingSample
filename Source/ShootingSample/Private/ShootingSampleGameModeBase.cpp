@@ -111,13 +111,3 @@ void AShootingSampleGameModeBase::UpdateLifeImage()
 		mainUI->lifeImage_2->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
 	}
 }
-
-void AShootingSampleGameModeBase::RespawnPlayer()
-{
-	// respawnDelayTime 만큼의 시간(초) 뒤에 플레이어 리스폰
-	
-	GetWorldTimerManager().SetTimer(respawnTimeHandle, FTimerDelegate::CreateLambda([&]()
-		{
-			RestartPlayer(GetWorld()->GetFirstPlayerController());
-		}), respawnDelayTime, false);
-}

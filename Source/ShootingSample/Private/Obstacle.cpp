@@ -91,7 +91,7 @@ void AObstacle::OnObstacleOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			}
 			else
 			{
-				currentGameMode->RespawnPlayer();
+				player->RespawnPlayer();
 			}
 		}
 	}

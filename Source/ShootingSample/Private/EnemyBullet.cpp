@@ -67,7 +67,7 @@ void AEnemyBullet::OnBulletOverlapPlayer(UPrimitiveComponent* OverlappedComponen
 		}
 		else
 		{
-			currentGameModeBase->RespawnPlayer();
+			player->RespawnPlayer();
 		}
 	}
 
